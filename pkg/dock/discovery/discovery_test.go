@@ -45,7 +45,9 @@ func init() {
 }
 
 func NewFakeDiscoverer() *DockDiscoverer {
-	return &DockDiscoverer{}
+	return &DockDiscoverer{
+		DockRegister: &DockRegister{},
+	}
 }
 
 func TestInit(t *testing.T) {

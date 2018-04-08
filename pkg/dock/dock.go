@@ -80,6 +80,10 @@ func (d *DockHub) TriggerDiscovery() error {
 	return nil
 }
 
+func (d *DockHub) RegisterDock() error {
+	return discovery.RegisterAttachDock()
+}
+
 // CreateVolume
 func (d *DockHub) CreateVolume(opt *pb.CreateVolumeOpts) (*model.VolumeSpec, error) {
 	//Get the storage drivers and do some initializations.

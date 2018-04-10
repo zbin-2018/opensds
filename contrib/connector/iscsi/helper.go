@@ -15,7 +15,7 @@
 package iscsi
 
 import (
-	"errors"
+	// "errors"
 	"log"
 	"net"
 	"os"

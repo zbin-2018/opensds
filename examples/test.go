@@ -54,23 +54,25 @@ func main() {
 		return
 	}
 	atc, _ := cli.GetVolumeAttachment(atcResp.Id)
+
+	fmt.Printf("host info is: %+v\n", atc.HostInfo)
 	fmt.Printf("atc info is: %+v\n", atc.ConnectionInfo)
 
-	dev, errAttach := cli.AttachVolume(atc)
+	resp, errAttach := cli.AttachVolume(atc)
 	if errAttach != nil {
 		fmt.Printf("the volume attachment %s failed to attach to node %s.\n", atc.Id, hostName)
+		cli.DetachVolume(atc)
 		cli.DeleteVolumeAttachment(atc.Id, nil)
 		cli.DeleteVolume(vol.Id, nil)
 		return
 	}
 
-	fmt.Println(dev)
+	fmt.Println(resp["device"])
 }
 
 // GetInitiator returns all the ISCSI Initiator Name
 func GetInitiator() ([]string, error) {
 	res, err := exec.Command("cat", "/etc/iscsi/initiatorname.iscsi").CombinedOutput()
-	log.Printf("result from cat: %s", res)
 	iqns := []string{}
 	if err != nil {
 		log.Printf("Error encountered gathering initiator names: %v", err)
@@ -79,7 +81,6 @@ func GetInitiator() ([]string, error) {
 
 	lines := strings.Split(string(res), "\n")
 	for _, l := range lines {
-		log.Printf("Inspect line: %s", l)
 		if strings.Contains(l, "InitiatorName=") {
 			iqns = append(iqns, strings.Split(l, "=")[1])
 		}

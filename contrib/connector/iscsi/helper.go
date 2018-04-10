@@ -190,12 +190,10 @@ func Connect(portal string, targetiqn string, targetlun string) (string, error) 
 			return "", err
 		}
 
-		isexist = waitForPathToExist(&devicePath, 10, ISCSITranslateTCP)
-
-		if !isexist {
-			return "", errors.New("Could not connect volume: Timeout after 10s")
-		}
-
+		// isexist = waitForPathToExist(&devicePath, 10, ISCSITranslateTCP)
+		// if !isexist {
+		//	return "", errors.New("Could not connect volume: Timeout after 10s")
+		// }
 	}
 	return devicePath, nil
 }

@@ -266,15 +266,17 @@ func (v *VolumeMgr) UpdateVolumeSnapshot(snpID string, body VolumeSnapshotBuilde
 	return &res, nil
 }
 
+type AttachResp map[string]string
+
 // AttachVolume
-func (v *VolumeMgr) AttachVolume(body VolumeAttachmentBuilder) (string, error) {
-	var res string
+func (v *VolumeMgr) AttachVolume(body VolumeAttachmentBuilder) (AttachResp, error) {
+	var res AttachResp
 	url := strings.Join([]string{
 		v.Endpoint,
 		urls.GenerateAttachmentURL(urls.Client, v.TenantId, body.Id+"/action")}, "/")
 
 	if err := v.Recv(url, "POST", body, &res); err != nil {
-		return "", err
+		return res, err
 	}
 
 	return res, nil

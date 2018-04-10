@@ -521,8 +521,21 @@ func (this *VolumeAttachmentPortal) AttachVolume() {
 		return
 	}
 
+	var dev = map[string]string{
+		"device": result,
+	}
+	// Marshal the device info.
+	body, err := json.Marshal(&dev)
+	if err != nil {
+		reason := fmt.Sprintf("Marshal volume attach result failed: %s", err.Error())
+		this.Ctx.Output.SetStatus(model.ErrorInternalServer)
+		this.Ctx.Output.Body(model.ErrorInternalServerStatus(reason))
+		log.Error(reason)
+		return
+	}
+
 	this.Ctx.Output.SetStatus(StatusAccepted)
-	this.Ctx.Output.Body([]byte(result))
+	this.Ctx.Output.Body(body)
 	return
 }
 

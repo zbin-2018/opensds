@@ -265,3 +265,26 @@ func (v *VolumeMgr) UpdateVolumeSnapshot(snpID string, body VolumeSnapshotBuilde
 
 	return &res, nil
 }
+
+// AttachVolume
+func (v *VolumeMgr) AttachVolume(body VolumeAttachmentBuilder) (string, error) {
+	var res string
+	url := strings.Join([]string{
+		v.Endpoint,
+		urls.GenerateAttachmentURL(urls.Client, v.TenantId, body.Id+"/action")}, "/")
+
+	if err := v.Recv(url, "POST", body, &res); err != nil {
+		return "", err
+	}
+
+	return res, nil
+}
+
+// DetachVolume
+func (v *VolumeMgr) DetachVolume(body VolumeAttachmentBuilder) error {
+	url := strings.Join([]string{
+		v.Endpoint,
+		urls.GenerateAttachmentURL(urls.Client, v.TenantId, body.Id+"/action")}, "/")
+
+	return v.Recv(url, "DELETE", body, nil)
+}

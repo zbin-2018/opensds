@@ -73,6 +73,14 @@ func (fvc *fakeVolumeController) DeleteVolumeSnapshot(*pb.DeleteVolumeSnapshotOp
 	return nil
 }
 
+func (fvc *fakeVolumeController) AttachVolume(*pb.AttachVolumeOpts) (string, error) {
+	return "", nil
+}
+
+func (fvc *fakeVolumeController) DetachVolume(*pb.DetachVolumeOpts) error {
+	return nil
+}
+
 func (fvc *fakeVolumeController) SetDock(dockInfo *model.DockSpec) { return }
 
 func TestCreateVolume(t *testing.T) {

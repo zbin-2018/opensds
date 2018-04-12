@@ -24,7 +24,6 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego/context"
-	log "github.com/golang/glog"
 )
 
 const (
@@ -97,7 +96,6 @@ func HttpError(ctx *context.Context, code int, format string, a ...interface{}) 
 	ctx.Output.SetStatus(code)
 	msg := fmt.Sprintf(format, a...)
 	ctx.Output.Body(errorStatus(code, msg))
-	errInfo := fmt.Sprintf("Code:%d, Reason:%s", code, msg)
-	log.Error(errInfo)
-	return fmt.Errorf(errInfo)
+
+	return fmt.Errorf("Code:%d, Reason:%s", code, msg)
 }
